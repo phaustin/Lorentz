@@ -1,9 +1,9 @@
-'''Runs Fortran code to solve Lorentz dynamical system and plots attractor.'''
 from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import lorentz
+"""Runs Fortran code to solve Lorentz dynamical system and plots attractor."""
 
 def assimilate_data(file_name):
     """Assimilate initial data from specified file."""
@@ -11,9 +11,8 @@ def assimilate_data(file_name):
     return np.genfromtxt(file_name)
 
 if __name__ == '__main__':
-    
-    data = assimilate_data('data.txt')
-    print data
+    # Retrieve data using Fortran code
+    data = lorentz.lorentz.assimilate_data()
     
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111, projection='3d')
@@ -23,9 +22,6 @@ if __name__ == '__main__':
     ax1.set_zlabel('z')
     ax1.grid(True)
     ax1.set_title('Lorentz Attractor')
-    
-    # Try and run some Fortran code here
-    lorentz.hello()
     
     plt.show()
     

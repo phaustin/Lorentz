@@ -1,27 +1,19 @@
-! module lorentz
-! use types, only: dp
-! use utils
-! implicit none
-! 
-! ! read a file and print its contents
-! ! integer :: u
-! ! real(dp) :: a(1116)
-! ! real(dp) :: B(279, 4)
-! ! 
-! ! open(newunit=u, file="data.txt", form="formatted", status="old", action="read")
-! ! read(u, *) a
-! ! B = reshape(a, [279, 4], order=[2, 1])
-! ! close(u)
-! ! call hello
-! 
-! contains
+module lorentz
+use types, only: dp
+implicit none
 
-subroutine hello()
-  print*,"Hello world!"
+contains
+
+subroutine assimilate_data(B)
+  ! read a file and make its contents available to Python
+  integer :: u
+  real :: a(1116)
+  real, intent(out) :: B(279, 4)
+  
+  open(newunit=u, file="data.txt", form="formatted", status="old", action="read")
+  read(u, *) a
+  B = reshape(a, [279, 4], order=[2, 1])
+  close(u)
 end subroutine
 
-! subroutine c_hello() bind(c, name='c_hello')
-!     call hello()
-! end subroutine
-! 
-! end module
+end module
