@@ -3,6 +3,7 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import lorentz
 
 def assimilate_data(file_name):
     """Assimilate initial data from specified file."""
@@ -22,6 +23,9 @@ if __name__ == '__main__':
     ax1.set_zlabel('z')
     ax1.grid(True)
     ax1.set_title('Lorentz Attractor')
+    
+    # Try and run some Fortran code here
+    lorentz.hello()
     
     plt.show()
     
