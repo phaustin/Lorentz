@@ -1,3 +1,5 @@
+! Wrapper to assign C callable names to Fortran routines to be used from 
+! Python.
 module lorentz_wrapper
 use lorentz, only : integrate
 use iso_c_binding, only: c_double

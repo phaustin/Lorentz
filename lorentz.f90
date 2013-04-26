@@ -1,6 +1,6 @@
 module lorentz
 use types, only: dp
-use integrators, only: euler, midpoint, rk4, heun, mod_euler
+use integrators, only: fwd_euler, midpoint, rk4, heun, mod_euler, ck4, ck5
 implicit none
 
 contains
@@ -18,7 +18,7 @@ y = [13.0_dp, 8.1_dp, 45.0_dp]
 
 ! Integrator loop
 do i = 0, steps-1
-    y = mod_euler(f, dt, y)
+    y = ck4(f, dt, y)
     ys(:, i+1) = y(:)
 end do
 
