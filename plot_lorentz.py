@@ -3,16 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import lorentz
-"""Runs Fortran code to solve Lorentz dynamical system and plots attractor."""
-
-def assimilate_data(file_name):
-    """Assimilate initial data from specified file."""
-    
-    return np.genfromtxt(file_name)
+__doc__="""Runs Fortran code to solve Lorentz dynamical system and plots 
+attractor."""
 
 if __name__ == '__main__':
     # Retrieve data using Fortran code
     data = lorentz.lorentz.assimilate_data()
+    lorentz.lorentz.butterfly()
     
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111, projection='3d')
