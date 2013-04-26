@@ -5,40 +5,27 @@ implicit none
 
 contains
 
-subroutine assimilate_data(B)
-! read a file and make its contents available to Python
-integer :: u
-real(dp) :: a(1116)
-real(dp), intent(out) :: B(279, 4)
-
-open(newunit=u, file="data.txt", form="formatted", status="old", action="read")
-read(u, *) a
-B = reshape(a, [279, 4])
-close(u)
-end subroutine
-
-subroutine butterfly()
+subroutine integrate(ys)
 ! Integration parameters
-real(dp), parameter :: t_start = 0.0_dp, t_stop = 0.1_dp, dt = 0.01_dp
+real(dp), parameter :: t_start = 0.0_dp, t_stop = 1.0_dp, dt = 0.01_dp
+integer, parameter :: steps = 1000
+integer :: i
+real(dp), intent(out) :: ys(3, steps)
 
 ! Initial conditions
 real(dp) :: y(3)
 y = [13.0_dp, 8.1_dp, 45.0_dp]
 
-!Integrator loop; loops are overrated, just STEP; frikking woot.
-y = euler(f, dt, y, t_start)
-print*, y
-y = euler(f, dt, y, t_start+dt)
-print*, y
-y = euler(f, dt, y, t_start+2*dt)
-print*, y
-y = euler(f, dt, y, t_start+3*dt)
-print*, y
+! Integrator loop
+do i = 0, steps-1
+    y = euler(f, dt, y, t_start)
+    ys(:, i+1) = y(:)
+end do
 
 end subroutine
 
 function f(x) result(x_new)
-! Parameters for the Lorentz equations
+! Callback function for the Lorentz equations
 real(dp), parameter :: s = 10.0_dp, b = 8.0_dp/3, r = 28.0_dp
 real(dp), intent(in) :: x(3)
 real(dp) :: x_new(3)

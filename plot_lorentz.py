@@ -9,14 +9,14 @@ attractor."""
 if __name__ == '__main__':
     # Retrieve data using Fortran code
     lorentz = CDLL('./lorentz_wrapper.so')
-    lorentz.c_butterfly()
+    #lorentz.c_butterfly()
     
-    data = np.empty((279, 4), dtype="double")
-    lorentz.c_assimilate_data(data.ctypes.data_as(POINTER(c_double)))
+    data = np.empty((1000, 3), dtype="double")
+    lorentz.c_integrate(data.ctypes.data_as(POINTER(c_double)))
     
     fig1 = plt.figure(1)
     ax1 = fig1.add_subplot(111, projection='3d')
-    ax1.plot(data[:,1], data[:,2], data[:,3])
+    ax1.plot(data[:,0], data[:,1], data[:,2])
     ax1.set_xlabel('x')
     ax1.set_ylabel('y')
     ax1.set_zlabel('z')
