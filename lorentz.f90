@@ -1,34 +1,7 @@
-module integrators
-use types, only: dp
-implicit none
-private
-public euler
-
-contains
-
-function euler(f, h, y, t) result(y_new)
-real(dp), intent(in) :: h, t
-real(dp), intent(in) :: y(3)
-real(dp) :: y_new(3)
-interface
-    function f(x)  result(x_new)
-    use types, only: dp
-    implicit none
-    real(dp), intent(in) :: x(3)
-    real(dp) :: x_new(3)
-    end function
-end interface
-y_new = y + h*f(y)
-end function
-
-end module
-
-program lorentz
+module lorentz
 use types, only: dp
 use integrators, only: euler
 implicit none
-
-call butterfly()
 
 contains
 
@@ -49,7 +22,7 @@ subroutine butterfly()
 real(dp), parameter :: t_start = 0.0_dp, t_stop = 0.1_dp, dt = 0.01_dp
 
 ! Initial conditions
-real(dp) :: y(3), z(3)
+real(dp) :: y(3)
 y = [13.0_dp, 8.1_dp, 45.0_dp]
 
 !Integrator loop; loops are overrated, just STEP; frikking woot.
@@ -75,4 +48,4 @@ x_new(2) = r*x(1) - x(2) - x(1)*x(3)
 x_new(3) = x(1)*x(2) - b*x(3)
 end function
 
-end program lorentz
+end module
