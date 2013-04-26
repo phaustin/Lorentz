@@ -6,10 +6,6 @@ implicit none
 
 contains
 
-! subroutine c_butterfly() bind (c)
-! call butterfly()
-! end subroutine
-
 subroutine c_integrate(data) bind (c)
 real(c_double), intent(out) :: data(3, 1000)
 call integrate(data)

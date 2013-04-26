@@ -2,16 +2,16 @@ module integrators
 use types, only: dp
 implicit none
 private
-public euler
+public euler, midpoint, rk4, heun, mod_euler
 
 contains
 
-function euler(f, h, y, t) result(y_new)
-real(dp), intent(in) :: h, t
+function euler(f, h, y) result(y_new)
+real(dp), intent(in) :: h
 real(dp), intent(in) :: y(3)
 real(dp) :: y_new(3)
 interface
-    function f(x)  result(x_new)
+    function f(x) result(x_new)
     use types, only: dp
     implicit none
     real(dp), intent(in) :: x(3)
@@ -21,50 +21,74 @@ end interface
 y_new = y + h*f(y)
 end function
 
-real(dp) function midpoint(f, h, y, t, dt) result(y_new)
-real(dp), intent(in) :: h, y, t, dt
+function midpoint(f, h, y) result(y_new)
+real(dp), intent(in) :: h
+real(dp), intent(in) :: y(3)
+real(dp) :: y_new(3), k1(3), k2(3)
 interface
-    real(dp) function f(x, t, dt)
+    function f(x) result(x_new)
     use types, only: dp
     implicit none
-    real(dp), intent(in) :: x, t, dt
+    real(dp), intent(in) :: x(3)
+    real(dp) :: x_new(3)
     end function
 end interface
-y_new = y + h*f(y + 0.5_dp*dt*f(y, t, dt), t + 0.5_dp*h, dt)
+k1 = h*f(y)
+k2 = h*f(y + 0.5_dp*k1)
+y_new = y + k2
 end function
 
-real(dp) function rk4(f, h, y, t, dt) result(y_new)
-real(dp), intent(in) :: h, y, t, dt
-real(dp) :: k1, k2, k3, k4
+function rk4(f, h, y) result(y_new)
+real(dp), intent(in) :: h
+real(dp), intent(in) :: y(3)
+real(dp) :: y_new(3), k1(3), k2(3), k3(3), k4(3)
 interface
-    real(dp) function f(x, t, dt)
+    function f(x) result(x_new)
     use types, only: dp
     implicit none
-    real(dp), intent(in) :: x, t, dt
+    real(dp), intent(in) :: x(3)
+    real(dp) :: x_new(3)
     end function
 end interface
-k1 = h*f(y, t, dt)
-k2 = h*f(y + 0.5_dp*k1, t + 0.5_dp*h, dt)
-k3 = h*f(y + 0.5_dp*k2, t + 0.5_dp*h, dt)
-k4 = h*f(y + k3, t + h, dt)
+k1 = h*f(y)
+k2 = h*f(y + 0.5_dp*k1)
+k3 = h*f(y + 0.5_dp*k2)
+k4 = h*f(y + k3)
 y_new = y + k1/6.0_dp + k2/3.0_dp + k3/3.0_dp + k4/6.0_dp
 end function
 
-real(dp) function heun(f, h, y, t, dt) result(y_new)
-real(dp), intent(in) :: h, y, t, dt
-real(dp) :: k1, k2, k3, k4
+function heun(f, h, y) result(y_new)
+real(dp), intent(in) :: h
+real(dp), intent(in) :: y(3)
+real(dp) :: y_new(3), k1(3), k2(3)
 interface
-    real(dp) function f(x, t, dt)
+    function f(x) result(x_new)
     use types, only: dp
     implicit none
-    real(dp), intent(in) :: x, t, dt
+    real(dp), intent(in) :: x(3)
+    real(dp) :: x_new(3)
     end function
 end interface
-k1 = h*f(y, t, dt)
-k2 = h*f(y + 0.5_dp*k1, t + 0.5_dp*h, dt)
-k3 = h*f(y + 0.5_dp*k2, t + 0.5_dp*h, dt)
-k4 = h*f(y + k3, t + h, dt)
-y_new = y + k1/6.0_dp + k2/3.0_dp + k3/3.0_dp + k4/6.0_dp
+k1 = h*f(y)
+k2 = h*f(y + 2.0_dp*k1/3)
+y_new = y + 0.25_dp*k1 + 0.75_dp*k2
+end function
+
+function mod_euler(f, h, y) result(y_new)
+real(dp), intent(in) :: h
+real(dp), intent(in) :: y(3)
+real(dp) :: y_new(3), k1(3), k2(3)
+interface
+    function f(x) result(x_new)
+    use types, only: dp
+    implicit none
+    real(dp), intent(in) :: x(3)
+    real(dp) :: x_new(3)
+    end function
+end interface
+k1 = h*f(y)
+k2 = h*f(y + k1)
+y_new = y + 0.5_dp*k1 + 0.5_dp*k2
 end function
 
 end module
