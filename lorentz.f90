@@ -8,12 +8,12 @@ contains
 subroutine assimilate_data(B)
 ! read a file and make its contents available to Python
 integer :: u
-real :: a(1116)
-real, intent(out) :: B(279, 4)
+real(dp) :: a(1116)
+real(dp), intent(out) :: B(279, 4)
 
 open(newunit=u, file="data.txt", form="formatted", status="old", action="read")
 read(u, *) a
-B = reshape(a, [279, 4], order=[2, 1])
+B = reshape(a, [279, 4])
 close(u)
 end subroutine
 
