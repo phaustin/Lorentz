@@ -8,7 +8,11 @@ attractor."""
 
 if __name__ == '__main__':
     # Run integrator from Fortran code
+<<<<<<< HEAD
     lorentz = CDLL('/Users/Vlad/Dropbox/Fortran/Practice Code/Lorentz/lorentz_wrapper.so')
+=======
+    lorentz = CDLL('/Users/phil/project/lorentz/liblorentz.dylib')
+>>>>>>> 2f4deb8072c5f3cf04c2bc7b7c7f1a65b1d2ee33
     data = np.empty((1000, 3), dtype="double")
     lorentz.c_integrate(data.ctypes.data_as(POINTER(c_double)))
     
