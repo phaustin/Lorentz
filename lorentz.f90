@@ -9,6 +9,8 @@ contains
 
 subroutine integrate(ys)
 ! Integration parameters
+ ! Integration parameters
+real(dp), parameter :: dt = 0.01_dp
 integer, parameter :: steps = 1000
 integer :: i
 ! Integration variables
